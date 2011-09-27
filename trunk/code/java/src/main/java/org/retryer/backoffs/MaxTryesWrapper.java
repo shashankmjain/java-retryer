@@ -8,7 +8,7 @@ import org.retryer.RetryInfo;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * fixme: Class MaxTryesWrapper is for porn
+ * fixme:
  *
  * @author cheremin
  * @since 10.08.11,  13:42

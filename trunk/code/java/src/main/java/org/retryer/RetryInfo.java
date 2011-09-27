@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * fixme: Class RetryInfo is for porn
+ * fixme:
  *
  * @author cheremin
  * @since 03.08.11,  17:32

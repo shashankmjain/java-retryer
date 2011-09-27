@@ -1,7 +1,7 @@
 package org.retryer;
 
 /**
- * fixme: Class IRetryer is for porn
+ * fixme:
  *
  * @author cheremin
  * @since 03.08.11,  17:16

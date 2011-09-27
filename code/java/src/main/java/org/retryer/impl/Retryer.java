@@ -10,7 +10,7 @@ import org.retryer.*;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * fixme: Class Retryer is for porn
+ * fixme:
  *
  * @author cheremin
  * @since 03.08.11,  17:27

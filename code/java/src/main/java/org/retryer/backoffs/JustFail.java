@@ -5,7 +5,7 @@ import org.retryer.IRetryStrategy;
 import org.retryer.RetryInfo;
 
 /**
- * fixme: Class JustFail is for porn
+ * fixme:
  *
  * @author cheremin
  * @since 10.08.11,  13:41

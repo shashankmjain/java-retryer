@@ -8,7 +8,7 @@ import org.retryer.IRetryStrategy;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * fixme: Class BackoffBuilder is for porn
+ * fixme:
  *
  * @author cheremin
  * @since 10.08.11,  14:13

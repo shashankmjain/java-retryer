@@ -5,7 +5,7 @@ import org.retryer.IRetryStrategy;
 import org.retryer.RetryInfo;
 
 /**
- * fixme: Class RetryNow is for porn
+ * fixme:
  *
  * @author cheremin
  * @since 03.08.11,  18:17

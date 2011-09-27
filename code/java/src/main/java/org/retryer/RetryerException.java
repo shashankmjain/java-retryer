@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 /**
- * fixme: Class RetryerException is for porn
+ * fixme:
  *
  * @author cheremin
  * @since 03.08.11,  17:24

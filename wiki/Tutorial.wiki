@@ -3,7 +3,7 @@
 
 = Introduction =
 
-Retryer is simple library for using in case when you need to run som task which can potentially fails by reasons out of your control -- so if it happens you want to make several attempts before surrender.
+Retryer is simple library for using in case when you need to run some task which can potentially fails by reasons out of your control -- so if it happens you want to make several attempts before surrender.
 
 = Components =
  
@@ -93,7 +93,7 @@ public static Object queryRetryableComplex( final String urlQuery ) throws Excep
                     return QueryUrlOnce.simpleQuery( urlQuery );
                 }
             },
-            BackoffBuilder.with( new LinearBackoff( TimeUnit.SECONDS.toMillis( 1 ) ) )
+            BackoffBuilder.with( new ExponentialBackoff( TimeUnit.SECONDS.toMillis( 1 ) ) )
                     .maxTryes( 5 )
                     .maxDelay( 10, TimeUnit.SECONDS )
                     .build()

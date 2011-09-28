@@ -1,23 +1,21 @@
 package org.retryer.backoffs;
 
 
-
 import org.retryer.IRetryStrategy;
 import org.retryer.RetryInfo;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * Retry with exponential growing delay: {@code delay(tryNo) = initialDelay * 2^tryNo},
+ * Retry with linear growing delay: {@code delay(tryNo) = initialDelay * (1+tryNo)},
  *
  * @author cheremin
  * @since 03.08.11,  18:17
  */
-public class ExponentialBackoff implements IRetryStrategy {
+public class LinearBackoff implements IRetryStrategy {
     private final long initialDelay;
 
-
-    public ExponentialBackoff( final long initialDelay ) {
+    public LinearBackoff( final long initialDelay ) {
         checkArgument( initialDelay > 0, "initialDelay(%s) must be >0", initialDelay );
 
         this.initialDelay = initialDelay;
@@ -44,7 +42,7 @@ public class ExponentialBackoff implements IRetryStrategy {
 
     protected static long delay( final int tryNo,
                                  final long initialDelay ) {
-        return ( long ) ( initialDelay * Math.pow( 2, tryNo ) );
+        return initialDelay * ( 1 + tryNo );
     }
 
     public long initialDelay() {
@@ -54,7 +52,7 @@ public class ExponentialBackoff implements IRetryStrategy {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append( "ExponentialBackoff" );
+        sb.append( "LinearBackoff" );
         sb.append( "[initialDelay=" )
                 .append( initialDelay );
         sb.append( ']' );

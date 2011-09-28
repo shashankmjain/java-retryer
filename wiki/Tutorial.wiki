@@ -40,7 +40,7 @@ public static Object simpleQuery( final String urlString ) throws Exception {
 final Object result = simpleQuery(URL_TO_QUERY);
 }}}
 
-What is OK, but --what if google will be unavailable--ok, ok, what if your network will be temporary overloaded, and connection can't be established?
+What is OK, but ~~what if google will be unavailable~~ok, ok, what if your network will be temporary overloaded, and connection can't be established?
 {{{
 public static Object queryRetryableNow( final String urlQuery ) throws Exception {
     return new Retryer().doRetryable(

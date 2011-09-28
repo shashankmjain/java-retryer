@@ -9,8 +9,6 @@ import org.retryer.impl.Retryer;
 import static org.junit.Assert.*;
 
 /**
- * fixme: Class org.retryer.RetryerTest is for test
- *
  * @author cheremin
  * @since 04.08.11,  13:24
  */

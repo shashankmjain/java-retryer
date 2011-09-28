@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 /**
- * fixme:
+ * Contains log of all exceptions was thrown during all retryes done
  *
  * @author cheremin
  * @since 03.08.11,  17:24

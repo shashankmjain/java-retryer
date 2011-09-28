@@ -8,7 +8,8 @@ import org.retryer.RetryInfo;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * fixme:
+ * Decorator for another {@link IRetryStrategy}, limiting maximum delay
+ * between retryes.
  *
  * @author cheremin
  * @since 10.08.11,  13:49

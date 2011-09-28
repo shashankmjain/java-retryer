@@ -5,7 +5,7 @@ import org.retryer.IRetryStrategy;
 import org.retryer.RetryInfo;
 
 /**
- * fixme:
+ * Just retry immediately
  *
  * @author cheremin
  * @since 03.08.11,  18:17

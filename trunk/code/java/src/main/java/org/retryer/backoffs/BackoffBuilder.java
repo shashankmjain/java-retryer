@@ -8,7 +8,8 @@ import org.retryer.IRetryStrategy;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * fixme:
+ * DSL-like builder for making complex {@link IRetryStrategy} from simple
+ * parts
  *
  * @author cheremin
  * @since 10.08.11,  14:13
@@ -59,7 +60,7 @@ public class BackoffBuilder {
     public IRetryStrategy build() {
         IRetryStrategy result = base;
         if ( maxTryes > 0 ) {
-            result = new MaxTryesWrapper( result, maxTryes );
+            result = new MaxTryesDecorator( result, maxTryes );
         }
         if ( maxDelay > 0 ) {
             result = new DelayLimiter( result, maxDelay );

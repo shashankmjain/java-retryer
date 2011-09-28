@@ -4,7 +4,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * fixme:
+ * Elementary action taken by {@link IRetryer}:
+ * fail, retry now, retry after given delay
  *
  * @author cheremin
  * @since 03.08.11,  17:32

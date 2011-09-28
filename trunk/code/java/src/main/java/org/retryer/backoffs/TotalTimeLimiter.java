@@ -1,14 +1,18 @@
 package org.retryer.backoffs;
 
 
-
 import org.retryer.IRetryStrategy;
 import org.retryer.RetryInfo;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * fixme:
+ * Decorator for another {@link IRetryStrategy}, limiting total time taken
+ * by task execution(s) itself and delays between retryes. This class takes
+ * first timestamp at it's creation, and if current {@link IRetryStrategy#shouldRetry(int, Throwable)}
+ * invocation occured after creationTime+maxTimeSpent -- it will overwrite
+ * value returned by decorated strategy, and returns {@link RetryInfo#fail()}
+ * instead
  *
  * @author cheremin
  * @since 10.08.11,  13:49

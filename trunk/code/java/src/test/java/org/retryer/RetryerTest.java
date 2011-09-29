@@ -57,7 +57,7 @@ public class RetryerTest {
                 oneOf( task ).execute( 0 );
                 will( throwException( exception ) );
 
-                oneOf( task ).failed( 0, exception );
+                oneOf( task ).isFatalReason( 0, exception );
                 will( returnValue( true ) );
             } catch ( Throwable t ) {
             }
@@ -77,7 +77,7 @@ public class RetryerTest {
                 oneOf( task ).execute( 0 );
                 will( throwException( exception ) );
 
-                oneOf( task ).failed( 0, exception );
+                oneOf( task ).isFatalReason( 0, exception );
                 will( returnValue( true ) );
             } catch ( Throwable t ) {
             }
@@ -106,7 +106,7 @@ public class RetryerTest {
                 inSequence( seq );
 
 
-                oneOf( task ).failed( 0, exception );
+                oneOf( task ).isFatalReason( 0, exception );
                 will( returnValue( false ) );
                 inSequence( seq );
 
@@ -142,7 +142,7 @@ public class RetryerTest {
                 inSequence( seq );
 
 
-                oneOf( task ).failed( 0, exception );
+                oneOf( task ).isFatalReason( 0, exception );
                 will( returnValue( false ) );
                 inSequence( seq );
 
@@ -178,7 +178,7 @@ public class RetryerTest {
                 inSequence( seq );
 
 
-                oneOf( task ).failed( 0, exception );
+                oneOf( task ).isFatalReason( 0, exception );
                 will( returnValue( false ) );
                 inSequence( seq );
 

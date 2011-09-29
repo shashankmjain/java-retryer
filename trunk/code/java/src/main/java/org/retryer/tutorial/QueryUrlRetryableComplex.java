@@ -15,11 +15,11 @@ import org.retryer.impl.Retryer;
 public class QueryUrlRetryableComplex {
 
 
-    public static Object queryRetryableComplex( final String urlQuery ) throws Exception {
+    public static String queryRetryableComplex( final String urlQuery ) throws Exception {
         return new Retryer().doRetryable(
-                new RetryableTaskHelper<Object, Exception>() {
+                new RetryableTaskHelper<String, Exception>() {
                     @Override
-                    public Object execute( final int tryNo ) throws Exception {
+                    public String execute( final int tryNo ) throws Exception {
                         return QueryUrlOnce.simpleQuery( urlQuery );
                     }
                 },

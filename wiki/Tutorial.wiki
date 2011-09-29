@@ -1,6 +1,8 @@
 #summary Tutorial for Retryer.
 #labels Featured
 #sidebar TableOfContents
+<wiki:toc max_depth="1" />
+
 = Introduction =
 
 Retryer is simple library for using in case when you need to run some task which can potentially fails by reasons out of your control -- so if it happens you want to make several attempts before surrender.

@@ -1,7 +1,7 @@
 #summary Tutorial for Retryer.
 #labels Featured
-#sidebar TableOfContents
-<wiki:toc max_depth="1" />
+
+<wiki:toc max_depth="2" />
 
 = Introduction =
 
@@ -23,7 +23,7 @@ Lets start from simple code what google for Retryer with standard URL api and `C
 {{{
 private static final String URL_TO_QUERY = "http://google.com/?q=Retryer";
 
-public static Object simpleQuery( final String urlString ) throws Exception {
+public static String simpleQuery( final String urlString ) throws Exception {
     final URL url = new URL( urlString );
     final InputStream is = url.openStream();
     try {
@@ -39,23 +39,23 @@ public static Object simpleQuery( final String urlString ) throws Exception {
 }
 ...
 
-final Object result = simpleQuery(URL_TO_QUERY);
+final String result = simpleQuery(URL_TO_QUERY);
 }}}
 
 == Retry now ==
 What is OK, but ~~what if google will be unavailable~~ ok, ok, what if your network will be temporary overloaded, and connection can't be established?
 {{{
-public static Object queryRetryableNow( final String urlQuery ) throws Exception {
+public static String queryRetryableNow( final String urlQuery ) throws Exception {
     return new Retryer().doRetryable(
-            new IRetryableTask<Object, Exception>() {
+            new IRetryableTask<String, Exception>() {
                 @Override
-                public Object execute( final int tryNo ) throws Exception {
+                public String execute( final int tryNo ) throws Exception {
                     return QueryUrlOnce.simpleQuery( urlQuery );
                 }
 
                 @Override
                 public boolean failed( final int tryNo, final Throwable reason ) {
-                    return false;
+                    return false;//no fatal exceptions for now
                 }
             },
             RetryNow.INSTANCE
@@ -68,9 +68,9 @@ here we will retry immediately after each fail, until the end of the universary
 Ok, but lets make a pause between retryes -- 1 second:
 
 {{{
-public static Object queryRetryableDelayed( final String urlQuery ) throws Exception {
+public static String queryRetryableDelayed( final String urlQuery ) throws Exception {
     return new Retryer().doRetryable(
-            new IRetryableTask<Object, Exception>() {
+            new IRetryableTask<String, Exception>() {
                 @Override
                 public Object execute( final int tryNo ) throws Exception {
                     return QueryUrlOnce.simpleQuery( urlQuery );
@@ -78,7 +78,7 @@ public static Object queryRetryableDelayed( final String urlQuery ) throws Excep
                 @Override
                 public boolean failed( final int tryNo,
                                        final Throwable reason ) {
-                    return false;
+                    return false;//still no fatal errors
                 }
             },
             new RetryDelayed( TimeUnit.SECONDS.toMillis( 1 ) )
@@ -91,11 +91,11 @@ public static Object queryRetryableDelayed( final String urlQuery ) throws Excep
 OK, lets make complex backoff strategy: "try to run given code, no more then 5 times, with exponentially increasing delay between tryes, starting with 1 second delay, but do not delay more then 10 seconds"  
 
 {{{
-public static Object queryRetryableComplex( final String urlQuery ) throws Exception {
+public static String queryRetryableComplex( final String urlQuery ) throws Exception {
     return new Retryer().doRetryable(
-            new RetryableTaskHelper<Object, Exception>() {
+            new RetryableTaskHelper<String, Exception>() {
                 @Override
-                public Object execute( final int tryNo ) throws Exception {
+                public String execute( final int tryNo ) throws Exception {
                     return QueryUrlOnce.simpleQuery( urlQuery );
                 }
             },

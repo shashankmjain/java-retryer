@@ -2,8 +2,7 @@ package org.retryer.dsl;
 
 import com.google.common.base.Preconditions;
 import org.retryer.IRetryStrategy;
-import org.retryer.backoffs.RetryDelayed;
-import org.retryer.backoffs.RetryNow;
+import org.retryer.backoffs.FixedDelayBackoff;
 
 /**
  * @author cheremin
@@ -32,7 +31,7 @@ public class RetryWithFixedDelayBuilder extends AbstractBackoffBuilder<RetryWith
 
     @Override
     protected IRetryStrategy createBaseStrategy() {
-        return new RetryDelayed( delay );
+        return new FixedDelayBackoff( delay );
     }
 
     @Override

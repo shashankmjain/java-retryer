@@ -1,11 +1,7 @@
 package org.retryer.dsl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.retryer.IRetryStrategy;
-import org.retryer.backoffs.RandomizedBackoffWrapper;
-
-import static com.google.common.base.Preconditions.*;
+import org.retryer.backoffs.RandomizingDelayDecorator;
 
 /**
  * fixme: Class AbstractDelayedBackoffBuilder is for porn
@@ -34,7 +30,7 @@ public abstract class AbstractDelayedBackoffBuilder<T extends AbstractDelayedBac
     protected IRetryStrategy build() {
         final IRetryStrategy result = super.build();
         if ( randomized ) {
-            return new RandomizedBackoffWrapper( result );
+            return new RandomizingDelayDecorator( result );
         } else {
             return result;
         }

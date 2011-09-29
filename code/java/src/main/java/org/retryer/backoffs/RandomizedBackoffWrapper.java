@@ -2,32 +2,35 @@ package org.retryer.backoffs;
 
 import java.util.Random;
 
+import com.google.common.base.Preconditions;
 import org.retryer.IRetryStrategy;
 import org.retryer.RetryInfo;
 
 
 /**
- * Like {@link ExponentialBackoff}, but delay is not exactly
- * {@code initialDelay*2^tryNo}, but {@code random[1, initialDelay*2^tryNo]}
+ * Decorate {@link IRetryStrategy}, so what if wrapped strategy decide to
+ * retry with delay, this wrapper will modify delay so it will be
+ * {@code random[1, delay]}
  * <p/>
  * This likely to reduce contention
  *
  * @author cheremin
  * @since 03.08.11,  18:17
  */
-public class RandomizedExponentialBackoff implements IRetryStrategy {
+public class RandomizedBackoffWrapper implements IRetryStrategy {
 
-    private final ExponentialBackoff baseBackoff;
+    private final IRetryStrategy wrapped;
     private final Random random = new Random();
 
-    public RandomizedExponentialBackoff( final long delay ) {
-        baseBackoff = new ExponentialBackoff( delay );
+    public RandomizedBackoffWrapper( final IRetryStrategy wrapped ) {
+        Preconditions.checkArgument( wrapped != null, "wrapped can't be null" );
+        this.wrapped = wrapped;
     }
 
     @Override
     public RetryInfo shouldRetry( final int tryNo,
                                   final Throwable failReason ) {
-        final RetryInfo info = baseBackoff.shouldRetry( tryNo, failReason );
+        final RetryInfo info = wrapped.shouldRetry( tryNo, failReason );
         if ( info.shouldRetry() && info.delay() > 0 ) {
             final long delay = info.delay();
             final double _delay = ( random.nextDouble() * delay ) + 1;
@@ -40,8 +43,8 @@ public class RandomizedExponentialBackoff implements IRetryStrategy {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append( "RandomizedExponentialBackoff[" )
-                .append( baseBackoff )
+                .append( "RandomizedBackoffWrapper[" )
+                .append( wrapped )
                 .append( ']' )
                 .toString();
     }

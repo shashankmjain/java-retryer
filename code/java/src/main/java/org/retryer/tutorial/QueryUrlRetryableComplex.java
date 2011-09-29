@@ -3,8 +3,7 @@ package org.retryer.tutorial;
 
 import java.util.concurrent.TimeUnit;
 
-import org.retryer.IRetryableTask;
-import org.retryer.backoffs.*;
+import org.retryer.dsl.Backoff;
 import org.retryer.impl.RetryableTaskHelper;
 import org.retryer.impl.Retryer;
 
@@ -23,7 +22,9 @@ public class QueryUrlRetryableComplex {
                         return QueryUrlOnce.simpleQuery( urlQuery );
                     }
                 },
-                BackoffBuilder.with( new ExponentialBackoff( TimeUnit.SECONDS.toMillis( 1 ) ) )
+                Backoff
+                        .withExponentialGrowingDelay()
+                        .startingWithDelay( 1, TimeUnit.SECONDS )
                         .maxTryes( 5 )
                         .maxDelay( 10, TimeUnit.SECONDS )
                         .build()

@@ -17,12 +17,12 @@ import org.retryer.RetryInfo;
  * @author cheremin
  * @since 03.08.11,  18:17
  */
-public class RandomizedBackoffWrapper implements IRetryStrategy {
+public class RandomizingDelayDecorator implements IRetryStrategy {
 
     private final IRetryStrategy wrapped;
     private final Random random = new Random();
 
-    public RandomizedBackoffWrapper( final IRetryStrategy wrapped ) {
+    public RandomizingDelayDecorator( final IRetryStrategy wrapped ) {
         Preconditions.checkArgument( wrapped != null, "wrapped can't be null" );
         this.wrapped = wrapped;
     }
@@ -43,7 +43,7 @@ public class RandomizedBackoffWrapper implements IRetryStrategy {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append( "RandomizedBackoffWrapper[" )
+                .append( "RandomizingDelayDecorator[" )
                 .append( wrapped )
                 .append( ']' )
                 .toString();

@@ -4,7 +4,7 @@ package org.retryer.tutorial;
 import java.util.concurrent.TimeUnit;
 
 import org.retryer.IRetryableTask;
-import org.retryer.backoffs.RetryDelayed;
+import org.retryer.backoffs.FixedDelayBackoff;
 import org.retryer.impl.Retryer;
 
 /**
@@ -28,7 +28,7 @@ public class QueryUrlRetryableDelayed {
                         return false;
                     }
                 },
-                new RetryDelayed( TimeUnit.SECONDS.toMillis( 1 ) )
+                new FixedDelayBackoff( TimeUnit.SECONDS.toMillis( 1 ) )
         );
     }
 

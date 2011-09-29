@@ -5,8 +5,6 @@ import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
 import org.retryer.IRetryableTask;
-import org.retryer.backoffs.BackoffBuilder;
-import org.retryer.backoffs.ExponentialBackoff;
 import org.retryer.dsl.Backoff;
 import org.retryer.impl.Retryer;
 

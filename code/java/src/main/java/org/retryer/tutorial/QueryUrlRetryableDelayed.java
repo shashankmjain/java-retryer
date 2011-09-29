@@ -14,17 +14,17 @@ import org.retryer.impl.Retryer;
 public class QueryUrlRetryableDelayed {
 
 
-    public static Object queryRetryableDelayed( final String urlQuery ) throws Exception {
+    public static String queryRetryableDelayed( final String urlQuery ) throws Exception {
         return new Retryer().doRetryable(
-                new IRetryableTask<Object, Exception>() {
+                new IRetryableTask<String, Exception>() {
                     @Override
-                    public Object execute( final int tryNo ) throws Exception {
+                    public String execute( final int tryNo ) throws Exception {
                         return QueryUrlOnce.simpleQuery( urlQuery );
                     }
 
                     @Override
-                    public boolean failed( final int tryNo,
-                                           final Throwable reason ) {
+                    public boolean isFatalReason( final int tryNo,
+                                                  final Throwable reason ) {
                         return false;
                     }
                 },

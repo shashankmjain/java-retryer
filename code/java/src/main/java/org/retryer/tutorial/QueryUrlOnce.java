@@ -20,7 +20,7 @@ public class QueryUrlOnce {
 
     public static final String URL_TO_QUERY = "http://google.com/?q=Retryer";
 
-    public static Object simpleQuery( final String urlString ) throws Exception {
+    public static String simpleQuery( final String urlString ) throws Exception {
         final URL url = new URL( urlString );
         final InputStream is = url.openStream();
         try {
@@ -36,6 +36,7 @@ public class QueryUrlOnce {
     }
 
     public static void main( final String[] args ) throws Exception {
-        System.out.println( simpleQuery( URL_TO_QUERY ) );
+        final String pageContent = simpleQuery( URL_TO_QUERY );
+        System.out.println( pageContent );
     }
 }

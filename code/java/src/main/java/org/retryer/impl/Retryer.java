@@ -36,7 +36,7 @@ public class Retryer implements IRetryer {
                 reasons.add( reason );
 
                 //cleanup
-                if ( task.failed( tryNo, reason ) ) {
+                if ( task.isFatalReason( tryNo, reason ) ) {
                     throw new RetryerException( reasons );
                 }
 

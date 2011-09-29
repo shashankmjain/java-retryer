@@ -18,8 +18,9 @@ public interface IRetryableTask<R, E extends Throwable> {
     public R execute( final int tryNo ) throws E;
 
     /**
-     * callback method, will be called by {@link IRetryer} after each failed
-     * try
+     * Callback method, will be called by {@link IRetryer} after each failed
+     * try to let the task itself to mark some fail reasons as "fatal" -- which
+     * means what continue trying after such reasons makes no sense.
      *
      * @param tryNo  number of try just failed (first try is 0)
      * @param reason exception thrown by last failed try (last call of {@link #execute(int)}
@@ -27,8 +28,8 @@ public interface IRetryableTask<R, E extends Throwable> {
      *         false if decision "retry or not retry" is up to currently used
      *         {@link IRetryStrategy}
      */
-    public boolean failed( final int tryNo,
-                           final Throwable reason );
+    public boolean isFatalReason( final int tryNo,
+                                  final Throwable reason );
 
 
 }

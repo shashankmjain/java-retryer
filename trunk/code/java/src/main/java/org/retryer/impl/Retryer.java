@@ -3,9 +3,8 @@ package org.retryer.impl;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.retryer.*;
+import org.slf4j.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -16,7 +15,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @since 03.08.11,  17:27
  */
 public class Retryer implements IRetryer {
-    private static final Log log = LogFactory.getLog( Retryer.class );
+    private static final Logger log = LoggerFactory.getLogger( Retryer.class );
 
 
     @Override
@@ -26,39 +25,44 @@ public class Retryer implements IRetryer {
         checkArgument( strategy != null, "strategy can't be null" );
         int tryNo = 0;
         final List<Throwable> reasons = Lists.newArrayList();
-        while ( true ) {
-            try {
-                log.debug( "try #" + tryNo + "..." );
-                return task.execute( tryNo );
-            } catch ( final Throwable reason ) {
-                log.debug( "try #" + tryNo + " failed: " + reason.getMessage() );
+        MDC.put( "task", task.toString() );
+        try {
+            while ( true ) {
+                try {
+                    log.debug( "try #{}...", tryNo );
+                    return task.execute( tryNo );
+                } catch ( final Throwable reason ) {
+                    log.debug( "try #{} failed: {}", tryNo, reason.getMessage() );
 
-                reasons.add( reason );
+                    reasons.add( reason );
 
-                //cleanup
-                if ( task.isFatalReason( tryNo, reason ) ) {
-                    throw new RetryerException( reasons );
-                }
-
-                final RetryInfo retryInfo = strategy.shouldRetry(
-                        tryNo,
-                        reason
-                );
-
-                if ( retryInfo.shouldFail() ) {
-                    throw new RetryerException( reasons );
-                } else {
-                    final long delay = retryInfo.delay();
-                    if ( delay > 0 ) {
-                        log.debug( "retry after " + delay + " ms" );
-                        Thread.sleep( delay );
-                    } else {
-                        log.debug( "retry now" );
+                    //cleanup
+                    if ( task.isFatalReason( tryNo, reason ) ) {
+                        throw new RetryerException( reasons );
                     }
+
+                    final RetryInfo retryInfo = strategy.shouldRetry(
+                            tryNo,
+                            reason
+                    );
+
+                    if ( retryInfo.shouldFail() ) {
+                        throw new RetryerException( reasons );
+                    } else {
+                        final long delay = retryInfo.delay();
+                        if ( delay > 0 ) {
+                            log.debug( "retry after {} ms", delay );
+                            Thread.sleep( delay );
+                        } else {
+                            log.debug( "retry now" );
+                        }
+                    }
+                } finally {
+                    tryNo++;
                 }
-            } finally {
-                tryNo++;
             }
+        } finally {
+            MDC.remove( "task" );
         }
     }
 

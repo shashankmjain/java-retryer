@@ -76,40 +76,59 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.8.1</version>
-            <scope>compile</scope>
+            <scope>compile,test</scope>
         </dependency>
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock-junit4</artifactId>
             <version>2.5.1</version>
+            <scope>compile,test</scope>
         </dependency>
 
 
         <!-- logging facade -->
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.2</version>
         </dependency>
         <!-- logging implementation  -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.6.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.2</version>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
             <scope>runtime</scope>
-        </dependency>
+        </dependency>-->
 
 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>r08</version>
+            <version>10.0</version>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>annotations</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>r07</version>
+            <version>10.0</version>
             <classifier>sources</classifier>
         </dependency>
 
@@ -118,7 +137,7 @@
             <artifactId>jmock-junit4</artifactId>
             <version>2.5.1</version>
             <classifier>sources</classifier>
-        </dependency>
+        </dependency>-->
 
 
     </dependencies>
@@ -210,9 +229,12 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-RequiredExecutionEnvironment>J2SE-1.5,JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
-                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>${project.groupId}.*;version="${project.version}"</Export-Package>
+                        <Bundle-RequiredExecutionEnvironment>J2SE-1.5,JavaSE-1.6
+                        </Bundle-RequiredExecutionEnvironment>
+                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}
+                        </Bundle-SymbolicName>
+                        <Export-Package>${project.groupId}.*;version="${project.version}"
+                        </Export-Package>
                     </instructions>
                 </configuration>
             </plugin>

@@ -7,7 +7,7 @@
     <artifactId>retryer</artifactId>
     <packaging>bundle</packaging>
 
-    <version>0.1.1-alpha</version>
+    <version>0.2</version>
     <name>Retryer</name>
     <url>http://code.google.com/p/java-retryer/</url>
     <description>Small library for retrying tasks which can potentially fail by unknown reasons.

@@ -1,4 +1,4 @@
-#labels maven
+#labels Featured
 = How to use Retryer with Maven =
 
 Retryer have not published in public maven repositories, but maintains it's own small repository in it's own svn. You'll need to add following to your pom project/repositories:

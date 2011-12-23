@@ -1,9 +1,13 @@
 package org.retryer;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.jmock.*;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.retryer.impl.RetryableTaskHelper;
 import org.retryer.impl.Retryer;
 
 import static org.junit.Assert.*;
@@ -17,7 +21,7 @@ public class RetryerTest {
 
     private final Mockery mockery = new Mockery();
 
-    final IRetryableTask task = mockery.mock( IRetryableTask.class );
+    final IRetryableTask<Void, Exception> task = mockery.mock( IRetryableTask.class );
     final IRetryStrategy strategy = mockery.mock( IRetryStrategy.class );
 
 
@@ -202,5 +206,128 @@ public class RetryerTest {
 
         final long finishedAt = System.currentTimeMillis();
         assertTrue( ( finishedAt - startedAt ) >= pause );
+    }
+
+    @Test( expected = InterruptedException.class )
+    public void interruptedExceptionRethrownUnwrapped() throws Exception {
+        final InterruptedException exception = new InterruptedException();
+        mockery.checking( new Expectations() {{
+            try {
+                oneOf( task ).execute( 0 );
+                will( throwException( exception ) );
+            } catch ( Throwable t ) {
+            }
+        }} );
+
+        new Retryer().doRetryable(
+                task,
+                strategy
+        );
+    }
+
+    @Test( expected = InterruptedException.class )
+    public void thrownInterruptedExceptionOnThreadInterruptDetectedWithoutRetryPause() throws Exception {
+        new Retryer().doRetryable(
+                new RetryableTaskHelper<Void, Exception>() {
+                    @Override
+                    public Void execute( final int tryNo ) throws Exception {
+                        Thread.currentThread().interrupt();
+                        throw new Exception();
+                    }
+                },
+                new IRetryStrategy() {
+                    @Override
+                    public RetryInfo shouldRetry( final int tryNo,
+                                                  final Throwable failReason ) {
+                        return RetryInfo.RETRY_NOW;
+                    }
+                }
+        );
+    }
+
+    @Test( expected = InterruptedException.class )
+    public void thrownInterruptedExceptionOnThreadInterruptDetectedWithoutRetryPause2() throws Exception {
+        final ExecutorService pool = Executors.newSingleThreadExecutor();
+        try {
+            final Thread retryerThread = Thread.currentThread();
+            pool.submit( new Runnable() {
+                @Override
+                public void run() {
+                    retryerThread.interrupt();
+                }
+            } );
+        } finally {
+            pool.shutdown();
+        }
+        new Retryer().doRetryable(
+                new RetryableTaskHelper<Void, Exception>() {
+                    @Override
+                    public Void execute( final int tryNo ) throws Exception {
+                        Thread.sleep( 100 );
+                        throw new Exception();
+                    }
+                },
+                new IRetryStrategy() {
+                    @Override
+                    public RetryInfo shouldRetry( final int tryNo,
+                                                  final Throwable failReason ) {
+                        return RetryInfo.RETRY_NOW;
+                    }
+                }
+        );
+
+
+    }
+
+    @Test( expected = InterruptedException.class )
+    public void thrownInterruptedExceptionOnThreadInterruptDetectedWithRetryPause() throws Exception {
+        new Retryer().doRetryable(
+                new RetryableTaskHelper<Void, Exception>() {
+                    @Override
+                    public Void execute( final int tryNo ) throws Exception {
+                        Thread.currentThread().interrupt();
+                        throw new Exception();
+                    }
+                },
+                new IRetryStrategy() {
+                    @Override
+                    public RetryInfo shouldRetry( final int tryNo,
+                                                  final Throwable failReason ) {
+                        return RetryInfo.retryDelayed( 100 );
+                    }
+                }
+        );
+    }
+
+    @Test( expected = InterruptedException.class )
+    public void thrownInterruptedExceptionOnThreadInterruptDetectedWithRetryPause2() throws Exception {
+        final ExecutorService pool = Executors.newSingleThreadExecutor();
+        try {
+            final Thread retryerThread = Thread.currentThread();
+            pool.submit( new Runnable() {
+                @Override
+                public void run() {
+                    retryerThread.interrupt();
+                }
+            } );
+        } finally {
+            pool.shutdown();
+        }
+        new Retryer().doRetryable(
+                new RetryableTaskHelper<Void, Exception>() {
+                    @Override
+                    public Void execute( final int tryNo ) throws Exception {
+                        Thread.sleep( 100 );
+                        throw new Exception();
+                    }
+                },
+                new IRetryStrategy() {
+                    @Override
+                    public RetryInfo shouldRetry( final int tryNo,
+                                                  final Throwable failReason ) {
+                        return RetryInfo.retryDelayed( 100 );
+                    }
+                }
+        );
     }
 }

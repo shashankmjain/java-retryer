@@ -9,14 +9,15 @@ import org.slf4j.*;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * Implementation of {@link IRetryer} interface
+ * Implementation of {@link IRetryer} interface.
+ * <p/>
+ * Stateless
  *
  * @author cheremin
  * @since 03.08.11,  17:27
  */
 public class Retryer implements IRetryer {
     private static final Logger log = LoggerFactory.getLogger( Retryer.class );
-
 
     @Override
     public <R, E extends Throwable> R doRetryable( final IRetryableTask<R, E> task,
@@ -30,7 +31,13 @@ public class Retryer implements IRetryer {
             while ( true ) {
                 try {
                     log.debug( "try #{}...", tryNo );
+                    if ( Thread.interrupted() ) {
+                        throw new InterruptedException( "Interrupted on " + tryNo + " try" );
+                    }
                     return task.execute( tryNo );
+                } catch ( InterruptedException e ) {
+                    log.debug( "try #{} interrupted: {}", tryNo, e.getMessage() );
+                    throw e;
                 } catch ( final Throwable reason ) {
                     log.debug( "try #{} failed: {}", tryNo, reason.getMessage() );
 
